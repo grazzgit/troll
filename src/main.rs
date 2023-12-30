@@ -1,32 +1,18 @@
-use clap::{Parser, Subcommand};
-use std::path::PathBuf;
-
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-struct Cli {
-    name: Option<String>,
-
-    #[arg(short, long, value_name = "FILE")]
-    config: Option<PathBuf>,
-
-    #[arg[short, long, action = clap::ArgAction::Count]]
-    debug: u8,
-
-    #[command(subcommand)]
-    command: Option<Commands>,
+struct User {
+    name: String,
+    email: String,
 }
 
-#[derive(Subcommand)]
-enum Commands {
-    Test {
-        #[arg(short, long)]
-        list: bool,
-    },
+impl User {
+    fn new(name: &str) -> User {
+        return User {
+            name: name.to_string(),
+            email: format!("{}@example.com", name),
+        };
+    }
 }
 
 fn main() {
-    let cli = Cli::parse();
-    if let Some(name) = cli.name.as_deref() {
-        println!("Hello, {}!", name);
-    }
+    let user = User::new("John");
+    println!("user:{}, email:{}", user.name, user.email)
 }
